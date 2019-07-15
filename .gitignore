@@ -59,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+
+bazel-*
+.DS_Store
+.drone.sec.yml
+.idea/
+debug.test
+*pb.go

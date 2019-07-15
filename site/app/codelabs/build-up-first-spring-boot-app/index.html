@@ -1,0 +1,400 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>构建第一个Spring Boot应用</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="../asset/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-52746336-1"
+                  id="build-up-first-spring-boot-app"
+                  title="构建第一个Spring Boot应用"
+                  environment="web"
+                  feedback-link="https://github.com/googlecodelabs/your-first-pwapp/issues">
+    
+      <google-codelab-step label="介绍" duration="0">
+        <p class="image-container"><img style="width: 325.00px" src="img/26e49bdd0075aead.png"></p>
+<p><strong>Last Updated:</strong> 2019-05-21</p>
+<h2 is-upgraded><strong>什么是Spring Boot</strong></h2>
+<p>Spring Boot是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程。该框架使用了特定的方式来进行配置，从而使开发人员不再需要定义样板化的配置。通过这种方式，Spring Boot致力于在蓬勃发展的快速应用开发领域(rapid application development)成为领导者。</p>
+<h2 is-upgraded><strong>你将会完成什么(What you&#39;ll build)</strong></h2>
+<p>在本次课程中，你将编写一个Spring Boot应用用以展示指定城市的天气信息，你将会：</p>
+<ul>
+<li>构建Spring Boot应用框架</li>
+<li>通过Spring Boot消费/发起HTTP请求</li>
+<li>对外提供API用以查询</li>
+</ul>
+<h2 is-upgraded><strong>你会学习到什么(What you&#39;ll learn)</strong></h2>
+<ul>
+<li>如何使用生成器快速构建Spring Boot框架</li>
+<li>如何通过消费POST / GET等HTTP请求</li>
+<li>如何用Spring Boot查询远端数据</li>
+<li>如何将数据转换为对应的格式</li>
+</ul>
+<p>本课程模板文件已经准备好，如果需要代码的地方也只需要简单的复制粘贴即可。</p>
+<h2 is-upgraded><strong>你需要准备些什么(What you&#39;ll need)</strong></h2>
+<ul>
+<li>一台电脑</li>
+<li>JDK 8或者以上版本</li>
+<li>Postman或者其他HTTP工具</li>
+<li>一根网线或者Wifi</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="构建你的Spring Boot项目" duration="2">
+        <h2 is-upgraded><strong>从生成器开始</strong></h2>
+<p>Spring提供了一个生成器（<a href="https://start.spring.io/" target="_blank">https://start.spring.io/</a>）用以快速构建Spring Boot项目，我们的工程也从这里开始。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/ea8694ec54e14074.png"></p>
+<h3 is-upgraded><strong>添加依赖</strong></h3>
+<p>这个页面除了可以选择Spring Boot的版本，还提供快速添加依赖功能。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/bfa05b27d7d851f0.gif"></p>
+<p>本课程会采用</p>
+<ul>
+<li>Java语言</li>
+<li>Spring Boot 2.1.5</li>
+<li>Maven</li>
+</ul>
+<p>依赖则会选择</p>
+<ul>
+<li>Web</li>
+<li>Actuator</li>
+</ul>
+<h3 is-upgraded><strong>填充元内容</strong></h3>
+<p>由于使用Maven项目，因此需要填充Project Metadata，即Group和Artifact，关于Maven的更多信息可以从<a href="https://maven.apache.org/" target="_blank">这里</a>找到。在这里我们将Group设置为<code>com.csi</code> 将Artifact设置为<code>first-spring-boot</code></p>
+<p>接下来，点击Generate Project下载这个脚手架工程。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="导入项目" duration="5">
+        <p>把刚才从生成器下载的工程解压，导入到你喜欢的IDE中。这里推荐使用<a href="https://www.jetbrains.com/idea/" target="_blank">IDEA</a>，免费的社区版功能依赖强大，足够满足API开发所需。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/8f19fa7f6a6b0441.gif"></p>
+<aside class="special"><p><strong>提示：第一次导入Spring Boot工程可能会花费较长时间，因为会下载很多Maven依赖包。 </strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="第一条API" duration="2">
+        <h2 is-upgraded>生成Controller</h2>
+<p>由于我们在生成器中设置的Group和Artifact的原因，本工程的包结构为<code>com.csi.firstspringboot</code>，接下来在<code>firstspringboot</code>包下再新建一个子包<code>controller</code>并且新建一个命名为<code>WeatherController</code>的Java类。代码如下：</p>
+<p><code>WeatherController.java</code></p>
+<pre><code>package com.csi.firstspringboot.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+* This class is used for consuming weather query
+*
+* Created by louqilin on 2019/5/27.
+*/
+@RestController
+public class WeatherController {
+
+   @GetMapping(&#34;/weather&#34;)
+   public String getWeather() {
+       return &#34;sunny&#34;;
+   }
+}
+</code></pre>
+<h2 is-upgraded><strong>运行你的工程</strong></h2>
+<p>右键点击<code>com.csi.firstspringboot</code>包下的FirstSpringBootApplication文件，选择运行。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/dea4eb137311221c.gif"></p>
+<p>当看到</p>
+<p>2019-05-27 11:49:25.278  INFO 49675 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path &#39;&#39;</p>
+<p>2019-05-27 11:49:25.282  INFO 49675 --- [           main] c.c.f.FirstSpringBootApplication         : Started FirstSpringBootApplication in 6.296 seconds (JVM running for 7.686)</p>
+<p>类似的信息证明Spring Boot应用启动成功。</p>
+<h2 is-upgraded><strong>测试你的工程</strong></h2>
+<p>从前述的控制台日志信息可知应用运行于8080端口，接下来通过Postman构建一个HTTP GET请求来访问服务。</p>
+<p>请求URL为：<a href="http://localhost:8080/weather" target="_blank">http://localhost:8080/weather</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/216e047ab5a92985.gif"></p>
+<p>至此你的第一条API就成功完成了。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="访问天气服务" duration="15">
+        <h2 is-upgraded><strong>目标API</strong></h2>
+<p>我们以中国气象局为下游数据提供方，用以查询西安地区的天气情况，其服务地址为：</p>
+<p><a href="http://www.weather.com.cn/data/sk/101110101.html" target="_blank">http://www.weather.com.cn/data/sk/101110101.html</a></p>
+<p class="image-container"><img style="width: 624.00px" src="img/cfcfdcdde205369.png"></p>
+<h2 is-upgraded><strong>创建data model</strong></h2>
+<p>从天气返回结果可知该API会返回JSON格式的数据，我们将其对应为一个POJO。新建名为model的包，并新建类Weather和类Weatherinfo。</p>
+<p>Weather.java</p>
+<pre><code>package com.csi.firstspringboot.model;
+
+/**
+* Created by louqilin on 2019/5/27.
+*/
+public class Weather {
+   private Weatherinfo weatherinfo;
+
+   public Weatherinfo getWeatherinfo() {
+       return weatherinfo;
+   }
+
+   public void setWeatherinfo(Weatherinfo weatherinfo) {
+       this.weatherinfo = weatherinfo;
+   }
+}</code></pre>
+<p>Weatherinfo.java</p>
+<pre><code>package com.csi.firstspringboot.model;
+
+/**
+* Created by louqilin on 2019/5/27.
+*/
+public class Weatherinfo {
+   private String city;
+   private String cityid;
+   private String temp;
+   private String WD;
+   private String WS;
+   private String SD;
+   private String AP;
+   private String njd;
+   private String WSE;
+   private String time;
+   private String sm;
+   private String isRadar;
+   private String Radar;
+
+   public String getCity() {
+       return city;
+   }
+
+   public void setCity(String city) {
+       this.city = city;
+   }
+
+   public String getCityid() {
+       return cityid;
+   }
+
+   public void setCityid(String cityid) {
+       this.cityid = cityid;
+   }
+
+   public String getTemp() {
+       return temp;
+   }
+
+   public void setTemp(String temp) {
+       this.temp = temp;
+   }
+
+   public String getWD() {
+       return WD;
+   }
+
+   public void setWD(String WD) {
+       this.WD = WD;
+   }
+
+   public String getWS() {
+       return WS;
+   }
+
+   public void setWS(String WS) {
+       this.WS = WS;
+   }
+
+   public String getSD() {
+       return SD;
+   }
+
+   public void setSD(String SD) {
+       this.SD = SD;
+   }
+
+   public String getAP() {
+       return AP;
+   }
+
+   public void setAP(String AP) {
+       this.AP = AP;
+   }
+
+   public String getNjd() {
+       return njd;
+   }
+
+   public void setNjd(String njd) {
+       this.njd = njd;
+   }
+
+   public String getWSE() {
+       return WSE;
+   }
+
+   public void setWSE(String WSE) {
+       this.WSE = WSE;
+   }
+
+   public String getTime() {
+       return time;
+   }
+
+   public void setTime(String time) {
+       this.time = time;
+   }
+
+   public String getSm() {
+       return sm;
+   }
+
+   public void setSm(String sm) {
+       this.sm = sm;
+   }
+
+   public String getIsRadar() {
+       return isRadar;
+   }
+
+   public void setIsRadar(String isRadar) {
+       this.isRadar = isRadar;
+   }
+
+   public String getRadar() {
+       return Radar;
+   }
+
+   public void setRadar(String radar) {
+       Radar = radar;
+   }
+}
+</code></pre>
+<h2 is-upgraded><strong>创建Service类</strong></h2>
+<p>虽然这是一个很小的demo，但是代码分层也是应该做的，所以我们需要新建一个service包用于存放执行业务逻辑的代码WeatherService.java。</p>
+<pre><code>package com.csi.firstspringboot.service;
+
+import com.alibaba.fastjson.JSON;
+import com.csi.firstspringboot.model.Weather;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.Charset;
+
+/**
+* Created by louqilin on 2019/5/27.
+*/
+@Service
+public class WeatherService {
+   @Autowired
+   private RestTemplate restTemplate;
+
+   public Weather getWeather() {
+       String weather = restTemplate.getForObject(&#34;http://www.weather.com.cn/data/sk/101110101.html&#34;
+               , String.class);
+       Weather weatherObj = JSON.parseObject(weather, Weather.class); //反序列化
+       return weatherObj;
+   }
+}
+
+</code></pre>
+<p>气象局的返回类型是text/html无法直接映射成POJO，于是引入了阿里巴巴的<a href="https://github.com/alibaba/fastjson/wiki/Quick-Start-CN" target="_blank">fastjson包</a>，用于做String转Object，需要在pom.xml中加入依赖：</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+  &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+  &lt;version&gt;1.2.57&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+<h2 is-upgraded><strong>修改WeatherController的代码</strong></h2>
+<p>这是为了使用service</p>
+<pre><code>@RestController
+public class WeatherController {
+   @Autowired                              // 加上
+   private WeatherService weatherService;  // 加上
+
+   @GetMapping(&#34;/weather&#34;)
+   public Weather getWeather() {
+       return weatherService.getWeather(); // 加上这行
+       //return &#34;sunny&#34;;                   // 注释掉
+   }
+}</code></pre>
+<aside class="special"><p><strong>请注意：这里并没有贴上已经包引用等的代码。 </strong></p>
+</aside>
+<p>重新启动应用，你会得到一个错误。别担心，这是Spring的问题。</p>
+<p>&#39;org.springframework.web.client.RestTemplate&#39; that could not be found</p>
+<p>为了简化处理，我们在WeatherService类中加入如下方法用以得到RestTemplate来处理请求。</p>
+<p>@Bean</p>
+<p><strong>public </strong>RestTemplate restTemplate() {</p>
+<p>   StringHttpMessageConverter m = <strong>new </strong>StringHttpMessageConverter(Charset.<em>forName</em>(<strong>&#34;UTF-8&#34;</strong>));</p>
+<p>   RestTemplate restTemplate = <strong>new </strong>RestTemplateBuilder().additionalMessageConverters(m).build();</p>
+<p><strong>return </strong>restTemplate;</p>
+<p>}</p>
+<p>由于返回值中有中文，因此这里指定了编码格式为UTF-8。</p>
+<h2 is-upgraded><strong>测试你的结果</strong></h2>
+<p>重启应用，继续使用Postman发送请求到<a href="http://localhost:8080/weather" target="_blank">http://localhost:8080/weather</a> 可以看到西安的天气数据。</p>
+<p class="image-container"><img style="width: 624.00px" src="img/47549d2a8b8c7c67.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="定制化业务" duration="5">
+        <h2 is-upgraded><strong>获取其他指定城市天气</strong></h2>
+<p>前面的功能只能获取西安市气象信息，而接下来我们可以通过不同的城市编号查询不同城市信息。</p>
+<p>从<a href="https://blog.csdn.net/mad1989/article/details/8923303" target="_blank">这个链接</a>中可以拿到城市变化列表。</p>
+<p>修改service代码</p>
+<pre><code>public Weather getWeather(final String cityId) {
+   // change to this
+   String weather = restTemplate.getForObject(&#34;http://www.weather.com.cn/data/sk/&#34;+ cityId +&#34;.html&#34;
+           , String.class);
+   Weather weatherObj = JSON.parseObject(weather, Weather.class); //反序列化
+   return weatherObj;
+}</code></pre>
+<p>修改controller代码</p>
+<p>@GetMapping(<strong>&#34;/weather&#34;</strong>)</p>
+<p><strong>public </strong>Weather getWeather() {</p>
+<p><strong>return weatherService</strong>.getWeather(<strong>&#34;101110101&#34;</strong>); <em>// 加上这行代表西安</em></p>
+<p><em>   //return &#34;sunny&#34;;                   // 注释掉</em></p>
+<p>}</p>
+<p>// 新加方法</p>
+<p>@GetMapping(<strong>&#34;/weather/{cityId}&#34;</strong>)</p>
+<p><strong>public </strong>Weather getWeatherByCity(@PathVariable <strong>final </strong>String cityId) {</p>
+<p><strong>return weatherService</strong>.getWeather(cityId); <em>// 加上这行</em></p>
+<p>}</p>
+<pre><code></code></pre>
+<p>访问上海地区天气，使用URL <a href="http://localhost:8080/weather/101020100" target="_blank">http://localhost:8080/weather/101020100</a> ，效果如下：</p>
+<p class="image-container"><img style="width: 580.00px" src="img/43491d384ea4c729.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="恭喜你完成课程" duration="0">
+        <p>恭喜你成功完成了本课程。</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="../asset/native-shim.js"></script>
+  <script src="../asset/custom-elements.min.js"></script>
+  <script src="../asset/prettify.js"></script>
+  <script src="../asset/codelab-elements.js"></script>
+
+</body>
+</html>

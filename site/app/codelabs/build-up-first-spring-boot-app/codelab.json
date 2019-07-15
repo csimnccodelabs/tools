@@ -1,0 +1,30 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-05-27T07:05:24Z",
+  "id": "build-up-first-spring-boot-app",
+  "duration": 29,
+  "title": "构建第一个Spring Boot应用",
+  "authors": "Phony Lou",
+  "summary": "在这个课程中，你将会完成你的第一个Spring Boot应用",
+  "source": "1f1kpR4RqWW54CpKAK0-suHTu_25hExvxxpre5hst99I",
+  "theme": "spring-boot",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "Spring Boot"
+  ],
+  "tags": [
+    "chrome",
+    "editor",
+    "jdk1.8+",
+    "maven",
+    "postman"
+  ],
+  "feedback": "https://github.com/googlecodelabs/your-first-pwapp/issues",
+  "ga": "UA-52746336-1",
+  "url": "build-up-first-spring-boot-app"
+}
